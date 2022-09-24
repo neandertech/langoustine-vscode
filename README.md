@@ -1,14 +1,21 @@
 # Langoustine VS Code extension
 
 <!--toc:start-->
-- [Configuration](#configuration)
-  - [Passing arguments](#passing-arguments)
+- [Langoustine VS Code extension](#langoustine-vs-code-extension)
+  - [Installation](#installation)
+  - [Configuration](#configuration)
+    - [Passing arguments](#passing-arguments)
 <!--toc:end-->
 
 This is a simple VS code extension intended for people interested in writing Language Servers (**LS**).
 
 It is designed to simplify development experience when working with language servers - instead of 
 writing a dedicated VS Code extension for each, you can just configure a server for a particular file extension.
+
+## Installation 
+
+Until this extension is published to Marketplace, please download `langoustine-vscode.vsix` from [Releases](https://github.com/neandertech/langoustine-vscode/releases).
+The extension can then be installed from the file (`Extensions: Install from VSIX` in command palette)
 
 ## Configuration
 
