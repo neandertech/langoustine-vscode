@@ -5,9 +5,11 @@
 
 import { Server } from 'http';
 import * as path from 'path';
+import * as vscode from 'vscode';
 import {
-	workspace as Workspace, window as Window, ExtensionContext, TextDocument, OutputChannel, WorkspaceFolder, Uri
+	workspace as Workspace, window as Window, ExtensionContext, TextDocument, OutputChannel
 } from 'vscode';
+
 
 import {
 	Disposable,
@@ -15,68 +17,70 @@ import {
 	LanguageClient,
 	LanguageClientOptions,
 	ServerOptions,
-	TransportKind
+	TransportKind,
+	VersionedTextDocumentIdentifier
 } from 'vscode-languageclient/node';
 
 
 interface LangoustineServer {
-	language?: string;
-	extension?: string;
-	command: string;
 	name: string;
+	extension: string;
+	command: string;
+	args: string[];
 }
 
-const clients: Map<DocumentFilter, LanguageClient> = new Map();
+const clients: Map<LangoustineServer, LanguageClient> = new Map();
 
-export function activate(context: ExtensionContext) {
+export function activate(
+	context: ExtensionContext
+) {
 	const servers: LangoustineServer[] =
 		Workspace.getConfiguration('langoustine-vscode').get('servers', []);
 	const outputChannel: OutputChannel = Window.createOutputChannel('langoustine-vscode');
 
-	function didOpenTextDocument(document: TextDocument): void {
-		outputChannel.appendLine(document.languageId);
-		// We are only interested in language mode text
-		if (document.languageId !== 'plaintext' || (document.uri.scheme !== 'file' && document.uri.scheme !== 'untitled')) {
-			return;
-		}
-		servers.forEach(element => {
+	servers.forEach(serverDef => {
+		if (!clients.has(serverDef)) {
 
 			const filter: DocumentFilter = {
 				scheme: 'file',
-				language: element.language ? element.language : "plaintext",
+				pattern: `**/*.${serverDef.extension}`
 			};
 
-			if (element.extension) {
-				filter.pattern = `*.{${element.extension}}`;
-			}
-			if (!clients.has(filter)) {
-				Window.showInformationMessage(`Creating a new client for ${JSON.stringify(filter)}`);
+			const clientOptions: LanguageClientOptions = {
+				documentSelector: [filter],
+				outputChannel: outputChannel
+			};
+
+			Window.showInformationMessage(`Creating a new client for ${JSON.stringify(clientOptions)}`);
 
 
-				const clientOptions: LanguageClientOptions = {
-					documentSelector: [filter],
-					outputChannel: outputChannel
-				};
+			const serverOptions: ServerOptions = {
+				command: serverDef.command,
+				args: serverDef.args
+			};
+			const client = new LanguageClient(
+				serverDef.name,
+				serverDef.name,
+				serverOptions,
+				clientOptions,
+			);
 
-				const serverOptions: ServerOptions = {
-					command: element.command
-				};
-				const client = new LanguageClient(
-					element.name,
-					element.name,
-					serverOptions,
-					clientOptions,
-				);
-
-				clients.set(filter, client);
-
-				client.start();
-			} else {
-				Window.showInformationMessage(`Client for ${JSON.stringify(filter)} is already present`);
-			}
-		});
+			clients.set(serverDef, client);
+			context.subscriptions.push(client.start());
+		} else {
+			Window.showInformationMessage(`Client for ${JSON.stringify(serverDef)} is already present`);
+		}
+	});
 
 
+
+
+	function didOpenTextDocument(document: TextDocument): void {
+		outputChannel.appendLine(document.languageId);
+		// // We are only interested in language mode text
+		// if (document.languageId !== 'plaintext' || (document.uri.scheme !== 'file' && document.uri.scheme !== 'untitled')) {
+		// 	return;
+		// }
 	}
 
 	Workspace.onDidOpenTextDocument(didOpenTextDocument);
