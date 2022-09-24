@@ -1,9 +1,9 @@
 {
 	"name": "langoustine-vscode",
 	"description": "Langoustine VS Code extension - for language server developers",
-	"author": "Microsoft Corporation",
-	"license": "MIT",
-	"version": "1.0.0",
+	"author": "Neandertech",
+	"version": "0.0.1",
+	"license": "Apache-2.0",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/neandertech/langoustine-vscode"
@@ -11,12 +11,12 @@
 	"publisher": "neander.tech",
 	"categories": [],
 	"engines": {
-		"vscode": "^1.63.0"
+		"vscode": "^1.66.0"
 	},
 	"activationEvents": [
 		"*"
 	],
-	"main": "./client/out/extension",
+	"main": "./out/main.js",
 	"contributes": {
 		"configuration": {
 			"type": "object",
@@ -49,18 +49,25 @@
 		}
 	},
 	"scripts": {
-		"vscode:prepublish": "npm run compile",
+		"vscode:prepublish": "npm run esbuild-base",
+		"esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/main.js --external:vscode --format=cjs --platform=node",
+		"esbuild": "npm run esbuild-base -- --sourcemap",
+		"esbuild-watch": "npm run esbuild-base -- --sourcemap --watch",
 		"compile": "tsc -b",
 		"watch": "tsc -b -w",
-		"lint": "eslint ./client/src  --ext .ts,.tsx",
-		"postinstall": "cd client && npm install && cd ..",
+		"lint": "eslint ./src  --ext .ts,.tsx",
 		"test": "sh ./scripts/e2e.sh"
+	},
+	"dependencies": {
+		"vscode-languageclient": "^7.0.0"
 	},
 	"devDependencies": {
 		"@types/mocha": "^9.1.0",
 		"@types/node": "^16.11.7",
+		"@types/vscode": "^1.66.0",
 		"@typescript-eslint/eslint-plugin": "^5.30.0",
 		"@typescript-eslint/parser": "^5.30.0",
+		"esbuild": "^0.15.9",
 		"eslint": "^8.13.0",
 		"mocha": "^9.2.1",
 		"typescript": "^4.7.2"

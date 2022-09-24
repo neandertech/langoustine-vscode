@@ -3,22 +3,16 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  * ------------------------------------------------------------------------------------------ */
 
-import { Server } from 'http';
-import * as path from 'path';
-import * as vscode from 'vscode';
 import {
 	workspace as Workspace, window as Window, ExtensionContext, TextDocument, OutputChannel
 } from 'vscode';
 
 
 import {
-	Disposable,
 	DocumentFilter,
 	LanguageClient,
 	LanguageClientOptions,
-	ServerOptions,
-	TransportKind,
-	VersionedTextDocumentIdentifier
+	ServerOptions
 } from 'vscode-languageclient/node';
 
 
@@ -76,7 +70,7 @@ export function activate(
 
 
 	function didOpenTextDocument(document: TextDocument): void {
-		outputChannel.appendLine(document.languageId);
+		// outputChannel.appendLine(document.languageId);
 		// // We are only interested in language mode text
 		// if (document.languageId !== 'plaintext' || (document.uri.scheme !== 'file' && document.uri.scheme !== 'untitled')) {
 		// 	return;
