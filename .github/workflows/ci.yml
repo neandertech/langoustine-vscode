@@ -20,7 +20,7 @@ jobs:
           npm install -g vsce
           mkdir -p bin/
           npm i
-          vsce package --allow-star-activation --o bin/langoustine-vscode.vsix
+          vsce package --allow-star-activation -o bin/langoustine-vscode.vsix
 
       - uses: actions/upload-artifact@v3
         with:
