@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: CI (${{ matrix.os }})
+    name: CI 
     strategy:
       fail-fast: false
     runs-on: ubuntu-latest
