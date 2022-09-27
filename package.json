@@ -1,14 +1,14 @@
 {
 	"name": "langoustine-vscode",
 	"description": "Langoustine VS Code extension - for language server developers",
-	"author": "Neandertech",
+	"author": "neandertech",
 	"version": "0.0.1",
 	"license": "Apache-2.0",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/neandertech/langoustine-vscode"
 	},
-	"publisher": "neander.tech",
+	"publisher": "neandertech",
 	"categories": [],
 	"engines": {
 		"vscode": "^1.66.0"
