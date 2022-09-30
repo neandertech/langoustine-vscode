@@ -14,8 +14,7 @@ writing a dedicated VS Code extension for each, you can just configure a server 
 
 ## Installation 
 
-Until this extension is published to Marketplace, please download `langoustine-vscode.vsix` from [Releases](https://github.com/neandertech/langoustine-vscode/releases).
-The extension can then be installed from the file (`Extensions: Install from VSIX` in command palette)
+The extension is available in VS Code Marketplace under the name [langoustine-vscode](https://marketplace.visualstudio.com/items?itemName=neandertech.langoustine-vscode)
 
 ## Configuration
 
